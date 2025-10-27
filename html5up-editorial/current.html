@@ -1,0 +1,306 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Current Betting Log</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body class="is-preload">
+
+  <div id="wrapper">
+    <div id="main">
+      <div class="inner">
+
+        <header id="header">
+          <a href="index.html" class="logo"><strong>NBA Betting</strong> by OneUpBetting</a>
+          <ul class="icons">
+            <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+            <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+            <li><a href="#" class="icon brands fa-snapchat-ghost"><span class="label">Snapchat</span></a></li>
+            <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+            <li><a href="#" class="icon brands fa-medium-m"><span class="label">Medium</span></a></li>
+          </ul>
+        </header>
+
+        <section>
+          <header class="main">
+            <h1>Current NBA Season Betting Log</h1>
+          </header>
+          <div class="content">
+            <p>This page displays the full betting log for the <strong>current NBA Season</strong>. Data is read-only from Google Sheets.</p>
+            <hr class="major" />
+            <h2>Season Summary</h2>
+            <div id="season-kpis" class="row">
+              <div class="col-4 col-12-small"><strong>Total Bets:</strong> <span data-kpi="bets">—</span></div>
+              <div class="col-4 col-12-small"><strong>Record:</strong> <span data-kpi="record">—</span></div>
+              <div class="col-4 col-12-small"><strong>P&amp;L (Units):</strong> <span data-kpi="pl">—</span></div>
+            </div>
+            <hr class="major" />
+            <h2>Betting Log</h2>
+            <div class="table-wrapper">
+              <table id="historic-log" class="alt">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Game</th>
+                    <th>Wager</th>
+                    <th>EV%</th>
+                    <th>Odds</th>
+                    <th>Stake (Units)</th>
+                    <th>Result</th>
+                    <th>Payout (Units)</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <div id="sidebar">
+      <div class="inner">
+        <section id="search" class="alt">
+          <form method="post" action="#">
+            <input type="text" name="query" id="query" placeholder="Search" />
+          </form>
+        </section>
+
+        <nav id="menu">
+          <header class="major">
+            <h2>Menu</h2>
+          </header>
+          <ul>
+            <li><a href="index.html">Homepage</a></li>
+            <li><a href="today.html">Today's Picks</a></li>
+            <li><a href="current.html">Current Betting Log</a></li>
+            <li>
+              <span class="opener">Historic Betting Logs</span>
+              <ul>
+                <li><a href="historic-2023-2024.html">2023–2024 NBA Season</a></li>
+                <li><a href="historic-2024-2025.html">2024–2025 NBA Season</a></li>
+              </ul>
+            </li>
+            <li><a href="#">Etiam Dolore</a></li>
+          </ul>
+        </nav>
+
+        <section>
+          <header class="major">
+            <h2>Get in touch</h2>
+          </header>
+          <p>Sed varius enim lorem ullamcorper dolore aliquam aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore.</p>
+          <ul class="contact">
+            <li class="icon solid fa-envelope"><a href="#">information@untitled.tld</a></li>
+            <li class="icon solid fa-phone">(000) 000-0000</li>
+            <li class="icon solid fa-home">1234 Somewhere Road #8254<br />Nashville, TN 00000-0000</li>
+          </ul>
+        </section>
+
+        <footer id="footer">
+          <p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/browser.min.js"></script>
+  <script src="assets/js/breakpoints.min.js"></script>
+  <script src="assets/js/util.js"></script>
+  <script src="assets/js/main.js"></script>
+
+  <script>
+  // Current season log; pulls Stake/Payout in UNITS from columns Y and Z.
+  (function () {
+    var SHEET_ID   = "1DwDw4pcQ4dQ98jKRjEUvXHOj75F_ZI6e_oTBysrTJzY";
+    var SHEET_NAME = "BettingLog";
+    // Select only what we need, in order:
+    // A=Date, B=Game, C=Wager, D=Odds, F=EV, G=Result, Y=StakeUnits, Z=PayoutUnits
+    var TQ         = "select A,B,C,D,F,G,Y,Z";
+    var JSONP_URL  =
+      "https://docs.google.com/spreadsheets/d/" + SHEET_ID +
+      "/gviz/tq?sheet=" + encodeURIComponent(SHEET_NAME) +
+      "&range=A2:Z" + // expand to Z so Y/Z are included
+      "&tq=" + encodeURIComponent(TQ) +
+      "&tqx=out:json;responseHandler:__handleBettingLog";
+
+    function toNumber(x) {
+      if (x === null || x === undefined || x === "") return NaN;
+      var n = Number(String(x).replace(/[^0-9\-\.+]/g, ""));
+      return isNaN(n) ? NaN : n;
+    }
+
+    function parseGVizDate(v) {
+      if (!v) return null;
+      if (v instanceof Date) return v;
+      if (typeof v === "string") {
+        var m = v.match(/^Date\(\s*(\d{4})\s*,\s*(\d{1,2})\s*,\s*(\d{1,2})\s*\)$/);
+        if (m) return new Date(+m[1], +m[2], +m[3]);
+      }
+      var d = new Date(v);
+      if (!isNaN(d)) return d;
+      var mdy = String(v).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+      if (mdy) return new Date(+mdy[3], +mdy[1]-1, +mdy[2]);
+      var ymd = String(v).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if (ymd) return new Date(+ymd[1], +ymd[2]-1, +ymd[3]);
+      return null;
+    }
+
+    function fmtDate(d) {
+      if (!(d instanceof Date) || isNaN(+d)) return "";
+      var y = d.getFullYear();
+      var m = String(d.getMonth() + 1).padStart(2, "0");
+      var day = String(d.getDate()).padStart(2, "0");
+      return y + "-" + m + "-" + day;
+    }
+
+    function setKPI(key, val) {
+      var el = document.querySelector('[data-kpi="' + key + '"]');
+      if (el) el.textContent = val;
+    }
+
+    // robust result classifier (W/L/Push/Void/Cancel/etc.)
+    function classifyResultLabel(s) {
+      if (s == null) return "unknown";
+      var t = String(s).trim().toLowerCase();
+      if (!t) return "unknown";
+      if (t === "win" || t === "won") return "win";
+      if (t === "loss" || t === "lost") return "loss";
+      if (t === "push" || t === "void" || t === "voided" || t === "cancel" || t === "canceled" || t === "cancelled" || t === "no action" || t === "noaction" || t === "tie") return "push";
+      if (/^w\b/.test(t) || /\bwin\b/.test(t)) return "win";
+      if (/^l\b/.test(t) || /\b(loss|lost)\b/.test(t)) return "loss";
+      if (/^p\b/.test(t) || /^v\b/.test(t) || /^c\b/.test(t) || /\b(push|void|cancel|no\s*action|tie)\b/.test(t)) return "push";
+      var ch = t.charAt(0);
+      if (ch === "w") return "win";
+      if (ch === "l") return "loss";
+      if (ch === "p" || ch === "v" || ch === "c" || ch === "t") return "push";
+      return "unknown";
+    }
+
+    function populateTable(rows) {
+      var tbody = document.querySelector("#historic-log tbody");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+      var frag = document.createDocumentFragment();
+      for (var i = 0; i < rows.length; i++) {
+        var r = rows[i];
+        var tr = document.createElement("tr");
+
+        var evDisplay = (r.evText && r.evText !== "")
+          ? r.evText
+          : (isFinite(r.ev)
+              ? ((Math.abs(r.ev) <= 1 ? (r.ev * 100) : r.ev).toFixed(2) + "%")
+              : "");
+
+        var cells = [
+          r.dateText || fmtDate(r.date),
+          r.game,
+          r.wager,
+          evDisplay,
+          (isFinite(r.odds) ? (r.odds > 0 ? ("+" + r.odds) : String(r.odds)) : (r.odds != null ? String(r.odds) : "")),
+          (isFinite(r.stakeUnits) ? r.stakeUnits.toFixed(2) : (r.stakeUnits != null ? String(r.stakeUnits) : "")),
+          r.result,
+          (isFinite(r.payoutUnits) ? r.payoutUnits.toFixed(2) : (r.payoutUnits != null ? String(r.payoutUnits) : ""))
+        ];
+
+        for (var j = 0; j < cells.length; j++) {
+          var td = document.createElement("td");
+          td.textContent = cells[j];
+          tr.appendChild(td);
+        }
+        frag.appendChild(tr);
+      }
+      tbody.appendChild(frag);
+    }
+
+    window.__handleBettingLog = function (resp) {
+      try {
+        var table = resp && resp.table;
+        var rows = (table && table.rows) || [];
+        var records = [];
+
+        for (var i = 0; i < rows.length; i++) {
+          var c = rows[i].c || [];
+          var v = function (idx) { return c[idx] ? c[idx].v : null; };
+          var f = function (idx) { return c[idx] ? c[idx].f : null; };
+
+          // Based on select A,B,C,D,F,G,Y,Z
+          var dateRaw  = v(0);
+          var dateFmt  = f(0) || (dateRaw != null ? String(dateRaw) : "");
+          var date     = parseGVizDate(dateRaw);
+
+          var game     = v(1);
+          var wager    = v(2);
+          var odds     = toNumber(v(3));
+          var ev       = toNumber(v(4));
+          var result   = (v(5) || "").toString().trim();
+          var stakeU   = toNumber(v(6)); // Y (units)
+          var payoutU  = toNumber(v(7)); // Z (units)
+          var evText   = f(4);
+
+          records.push({
+            date: date,
+            dateText: dateFmt,
+            game: game,
+            wager: wager,
+            odds: odds,
+            ev: ev,
+            evText: evText,
+            result: result,
+            stakeUnits: stakeU,
+            payoutUnits: payoutU
+          });
+        }
+
+        // KPIs in UNITS
+        var bets   = records.length;
+        var wins   = 0, losses = 0, pushes = 0;
+        for (var k = 0; k < records.length; k++) {
+          var cls = classifyResultLabel(records[k].result);
+          if (cls === "win") wins++;
+          else if (cls === "loss") losses++;
+          else if (cls === "push") pushes++;
+        }
+
+        var profitUnits = records.reduce(function (s, x) { return s + (isFinite(x.payoutUnits) ? x.payoutUnits : 0); }, 0);
+        var stakedUnits = records.reduce(function (s, x) { return s + (isFinite(x.stakeUnits) ? x.stakeUnits : 0); }, 0);
+        var roi    = stakedUnits ? (profitUnits / stakedUnits) : 0;
+
+        var pushLabel = pushes === 1 ? "push" : "pushes";
+        setKPI("bets", bets);
+        setKPI("record", wins + "–" + losses + (pushes ? ("–" + pushes + " " + pushLabel) : ""));
+        setKPI("pl", (profitUnits >= 0 ? "+" : "") + profitUnits.toFixed(2) + (stakedUnits ? (" (ROI " + (roi * 100).toFixed(2) + "%)") : ""));
+
+        populateTable(records);
+      } catch (e) {
+        console.error(e);
+        setKPI("bets", "—");
+        setKPI("record", "—");
+        setKPI("pl", "—");
+        var tbody = document.querySelector("#historic-log tbody");
+        if (tbody) {
+          var tr = document.createElement("tr");
+          var td = document.createElement("td");
+          td.colSpan = 8;
+          td.textContent = "Failed to load data.";
+          tr.appendChild(td);
+          tbody.appendChild(tr);
+        }
+      }
+    };
+
+    document.addEventListener("DOMContentLoaded", function () {
+      var s = document.createElement("script");
+      s.src = JSONP_URL;
+      s.async = true;
+      document.body.appendChild(s);
+    });
+  })();
+  </script>
+
+</body>
+</html>

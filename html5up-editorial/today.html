@@ -1,0 +1,328 @@
+<!DOCTYPE HTML>
+<!--
+  Editorial by HTML5 UP
+  html5up.net | @ajlkn
+  Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+<head>
+  <title>Today's Picks</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body class="is-preload">
+
+  <!-- Wrapper -->
+  <div id="wrapper">
+
+    <!-- Main -->
+    <div id="main">
+      <div class="inner">
+
+        <!-- Header -->
+        <header id="header">
+          <a href="index.html" class="logo"><strong>NBA Betting</strong> by OneUpBetting</a>
+          <ul class="icons">
+            <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+            <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+            <li><a href="#" class="icon brands fa-snapchat-ghost"><span class="label">Snapchat</span></a></li>
+            <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+            <li><a href="#" class="icon brands fa-medium-m"><span class="label">Medium</span></a></li>
+          </ul>
+        </header>
+
+        <!-- Content -->
+        <section>
+          <header class="main">
+            <h1>Today's Picks</h1>
+          </header>
+
+          <p>This page shows picks for <strong id="picks-date">—</strong>. If there are no picks today, it will show the most recent prior slate from the current season’s log.</p>
+
+          <hr class="major" />
+
+          <div class="table-wrapper">
+            <table id="today-picks" class="alt">
+              <thead>
+                <tr>
+                  <th>Game</th>
+                  <th>Wager</th>
+                  <th>EV%</th>
+                  <th>Odds</th>
+                  <th>Stake (units)</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+
+          <p id="no-picks" style="display:none;">No past picks found in the current season.</p>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div id="sidebar">
+      <div class="inner">
+
+        <!-- Search -->
+        <section id="search" class="alt">
+          <form method="post" action="#">
+            <input type="text" name="query" id="query" placeholder="Search" />
+          </form>
+        </section>
+
+        <!-- Menu -->
+        <nav id="menu">
+          <header class="major">
+            <h2>Menu</h2>
+          </header>
+          <ul>
+            <li><a href="index.html">Homepage</a></li>
+            <li><a href="today.html">Today's Picks</a></li>
+            <li><a href="current.html">Current Betting Log</a></li>
+            <li>
+              <span class="opener">Historic Betting Logs</span>
+              <ul>
+                <li><a href="historic-2023-2024.html">2023–2024 NBA Season</a></li>
+                <li><a href="historic-2024-2025.html">2024–2025 NBA Season</a></li>
+              </ul>
+            </li>
+            <li><a href="#">Etiam Dolore</a></li>
+          </ul>
+        </nav>
+
+        <!-- Section -->
+        <section>
+          <header class="major">
+            <h2>Get in touch</h2>
+          </header>
+          <p>Sed varius enim lorem ullamcorper dolore aliquam aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore.</p>
+          <ul class="contact">
+            <li class="icon solid fa-envelope"><a href="#">information@untitled.tld</a></li>
+            <li class="icon solid fa-phone">(000) 000-0000</li>
+            <li class="icon solid fa-home">1234 Somewhere Road #8254<br />
+              Nashville, TN 00000-0000</li>
+          </ul>
+        </section>
+
+        <!-- Footer -->
+        <footer id="footer">
+          <p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+        </footer>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/browser.min.js"></script>
+  <script src="assets/js/breakpoints.min.js"></script>
+  <script src="assets/js/util.js"></script>
+  <script src="assets/js/main.js"></script>
+
+  <script>
+  /* Today's Picks
+     - Loads BettingLog via GViz JSONP (no CORS)
+     - Shows today's rows; if none, shows the nearest PAST date's rows
+  */
+  (function () {
+    // Use your current-season sheet (units are in Y/Z)
+    var SHEET_ID   = "1DwDw4pcQ4dQ98jKRjEUvXHOj75F_ZI6e_oTBysrTJzY"; // current season
+    var SHEET_NAME = "BettingLog";
+
+    // A=Date, B=Game, C=Wager, D=Odds, F=EV, G=Result, Y=StakeUnits, Z=PayoutUnits
+    var TQ = "select A,B,C,D,F,G,Y,Z";
+
+    var JSONP_URL  =
+      "https://docs.google.com/spreadsheets/d/" + SHEET_ID +
+      "/gviz/tq?sheet=" + encodeURIComponent(SHEET_NAME) +
+      "&range=A2:Z" +                 // skip header row
+      "&tq=" + encodeURIComponent(TQ) +
+      "&tqx=out:json;responseHandler:__handleTodayPicks"; // colon, not equals
+
+    function toNumber(x) {
+      if (x === null || x === undefined || x === "") return NaN;
+      var n = Number(String(x).replace(/[^0-9\-\.+]/g, ""));
+      return isNaN(n) ? NaN : n;
+    }
+
+    // Accept GViz Date(YYYY,MM,DD), mm/dd/yyyy, yyyy-mm-dd, or Date object
+    function parseGVizDate(v) {
+      if (!v) return null;
+      if (v instanceof Date) return v;
+
+      if (typeof v === "string") {
+        var m = v.match(/^Date\(\s*(\d{4})\s*,\s*(\d{1,2})\s*,\s*(\d{1,2})\s*\)$/);
+        if (m) return new Date(+m[1], +m[2], +m[3]); // month already 0-based
+      }
+
+      var d = new Date(v);
+      if (!isNaN(d)) return d;
+
+      var mdy = String(v).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+      if (mdy) return new Date(+mdy[3], +mdy[1]-1, +mdy[2]);
+
+      var ymd = String(v).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if (ymd) return new Date(+ymd[1], +ymd[2]-1, +ymd[3]);
+
+      return null;
+    }
+
+    function startOfDay(d) {
+      return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    }
+
+    function fmtYMD(d) {
+      return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    function renderPicks(rows, dateLabel) {
+      var tbody = document.querySelector("#today-picks tbody");
+      var labelEl = document.getElementById("picks-date");
+      var noEl = document.getElementById("no-picks");
+      if (!tbody || !labelEl || !noEl) return;
+
+      if (!rows.length) {
+        tbody.innerHTML = "";
+        labelEl.textContent = "—";
+        noEl.style.display = "";
+        return;
+      }
+
+      noEl.style.display = "none";
+      labelEl.textContent = dateLabel;
+
+      var frag = document.createDocumentFragment();
+      tbody.innerHTML = "";
+
+      for (var i = 0; i < rows.length; i++) {
+        var r = rows[i];
+        var tr = document.createElement("tr");
+
+        // Prefer formatted EV (e.g., "2.53%"); fallback converts numbers to %
+        var evDisplay = (r.evText && r.evText !== "")
+          ? r.evText
+          : (isFinite(r.ev)
+              ? ((Math.abs(r.ev) <= 1 ? (r.ev * 100) : r.ev).toFixed(2) + "%")
+              : "");
+
+        var cells = [
+          r.game || "",
+          r.wager || "",
+          evDisplay,
+          (isFinite(r.odds) ? (r.odds > 0 ? ("+" + r.odds) : String(r.odds)) : (r.odds != null ? String(r.odds) : "")),
+          (isFinite(r.stakeU) ? r.stakeU.toFixed(2) : (r.stakeU != null ? String(r.stakeU) : ""))
+        ];
+
+        for (var j = 0; j < cells.length; j++) {
+          var td = document.createElement("td");
+          td.textContent = cells[j];
+          tr.appendChild(td);
+        }
+        frag.appendChild(tr);
+      }
+      tbody.appendChild(frag);
+    }
+
+    // JSONP handler: loads all rows, then shows today or nearest PAST date
+    window.__handleTodayPicks = function (resp) {
+      try {
+        var table = resp && resp.table;
+        var rows = (table && table.rows) || [];
+        var records = [];
+
+        for (var i = 0; i < rows.length; i++) {
+          var c = rows[i].c || [];
+          var v = function (idx) { return c[idx] ? c[idx].v : null; };
+          var f = function (idx) { return c[idx] ? c[idx].f : null; };
+
+          // indexes correspond to the TQ order: A(0),B(1),C(2),D(3),F(4),G(5),Y(6),Z(7)
+          var dateRaw  = v(0);
+          var dateFmt  = f(0) || (dateRaw != null ? String(dateRaw) : "");
+          var date     = parseGVizDate(dateRaw);
+
+          var game     = v(1);
+          var wager    = v(2);
+          var odds     = toNumber(v(3));
+          var ev       = toNumber(v(4));
+          var evText   = f(4);
+          var result   = (v(5) || "").toString().trim(); // available if you want to show status
+          var stakeU   = toNumber(v(6));
+          var payoutU  = toNumber(v(7));
+
+          records.push({
+            date: date,
+            dateText: dateFmt,
+            game: game,
+            wager: wager,
+            odds: odds,
+            stakeU: stakeU,
+            ev: ev,
+            evText: evText,
+            result: result,
+            payoutU: payoutU
+          });
+        }
+
+        // Map dates (at start-of-day) to rows
+        var byDate = new Map();
+        for (var r = 0; r < records.length; r++) {
+          var d = records[r].date instanceof Date && !isNaN(+records[r].date)
+                   ? startOfDay(records[r].date)
+                   : null;
+
+          if (!d && records[r].dateText) {
+            var tryD = parseGVizDate(records[r].dateText);
+            if (tryD) d = startOfDay(tryD);
+          }
+
+          if (!d) continue;
+
+          var key = +d;
+          if (!byDate.has(key)) byDate.set(key, []);
+          byDate.get(key).push(records[r]);
+        }
+
+        var today = startOfDay(new Date());
+        var todayKey = +today;
+
+        // 1) If today exists, show it
+        if (byDate.has(todayKey)) {
+          renderPicks(byDate.get(todayKey), fmtYMD(today));
+          return;
+        }
+
+        // 2) Otherwise: find the closest PAST date (largest key < today)
+        var pastKeys = Array.from(byDate.keys()).filter(function (k) { return k < todayKey; });
+        pastKeys.sort(function (a, b) { return b - a; }); // descending, so first = nearest past
+
+        if (pastKeys.length) {
+          var prevKey = pastKeys[0];
+          renderPicks(byDate.get(prevKey), fmtYMD(new Date(prevKey)));
+        } else {
+          // No past dates in the sheet
+          renderPicks([], "");
+        }
+      } catch (e) {
+        console.error(e);
+        renderPicks([], "");
+      }
+    };
+
+    // Inject JSONP script
+    document.addEventListener("DOMContentLoaded", function () {
+      var s = document.createElement("script");
+      s.src = JSONP_URL;
+      s.async = true;
+      document.body.appendChild(s);
+    });
+  })();
+  </script>
+
+</body>
+</html>

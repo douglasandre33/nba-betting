@@ -1,0 +1,372 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>OneUpBetting — NBA Model Picks</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body class="is-preload">
+<div id="wrapper">
+
+  <!-- Main -->
+  <div id="main">
+    <div class="inner">
+
+      <!-- Header -->
+      <header id="header">
+        <a href="index.html" class="logo"><strong>NBA Betting</strong> by OneUpBetting</a>
+        <ul class="icons">
+          <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+          <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+        </ul>
+      </header>
+
+      <!-- Hero -->
+      <section id="banner">
+        <div class="content">
+          <header>
+            <h1>NBA Betting by OneUpBetting</h1>
+            <p>Transparent results. No hype—just data. One-stop shop for NBA betting</p>
+          </header>
+          <p>Our projections price every game using player-level inputs (pace, usage, opponent, schedule, etc.) and surface +EV edges across major books. Every pick is logged publicly—wins, losses, and pushes—in units so you can track true performance.</p>
+          <ul class="actions">
+            <li><a href="today.html" class="button big primary">See Today’s Picks</a></li>
+            <li><a href="current.html" class="button big">View Full Betting Log</a></li>
+          </ul>
+        </div>
+        <span class="image object">
+          <img src="images/pic10.jpg" alt="NBA model picks" />
+        </span>
+      </section>
+
+      <!-- Live KPIs (Season) -->
+      <section>
+        <header class="major"><h2>Live Season Snapshot</h2></header>
+        <div class="features">
+          <article>
+            <span class="icon solid fa-chart-line"></span>
+            <div class="content">
+              <h3>P&amp;L (Units)</h3>
+              <p><strong id="kpi-pl">—</strong> <span class="sub">(<span id="kpi-roi">—</span> ROI)</span></p>
+            </div>
+          </article>
+          <article>
+            <span class="icon solid fa-bullseye"></span>
+            <div class="content">
+              <h3>Record</h3>
+              <p><strong id="kpi-record">—</strong> <span class="sub">(Win rate <span id="kpi-winrate">—</span>)</span></p>
+            </div>
+          </article>
+          <article>
+            <span class="icon solid fa-percentage"></span>
+            <div class="content">
+              <h3>Average Edge (EV%)</h3>
+              <p><strong id="kpi-ev">—</strong></p>
+            </div>
+          </article>
+          <article>
+            <span class="icon solid fa-calendar-check"></span>
+            <div class="content">
+              <h3>Next Picks Date</h3>
+              <p><strong id="kpi-nextdate">—</strong></p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Recent Performance -->
+      <section>
+        <header class="major"><h2>Recent Performance</h2></header>
+        <div class="row gtr-uniform">
+          <div class="col-6 col-12-small">
+            <h3>Last 7 Days</h3>
+            <ul>
+              <li>P&amp;L: <strong id="kpi-7-pl">—</strong></li>
+              <li>Record: <strong id="kpi-7-record">—</strong> (<span id="kpi-7-winrate">—</span> win rate)</li>
+            </ul>
+          </div>
+          <div class="col-6 col-12-small">
+            <h3>Last 30 Days</h3>
+            <ul>
+              <li>P&amp;L: <strong id="kpi-30-pl">—</strong></li>
+              <li>Record: <strong id="kpi-30-record">—</strong> (<span id="kpi-30-winrate">—</span> win rate)</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- How it works -->
+      <section>
+        <header class="major"><h2>How It Works</h2></header>
+        <div class="features">
+          <article>
+            <span class="icon solid fa-database"></span>
+            <div class="content">
+              <h3>Player-Level Modeling</h3>
+              <p>Minutes, usage, pace, opponent strength, rest, and injury context roll up to team projections and fair prices.</p>
+            </div>
+          </article>
+          <article>
+            <span class="icon solid fa-scale-balanced"></span>
+            <div class="content">
+              <h3>Line Shopping &amp; EV</h3>
+              <p>Edges are calculated versus multiple books; only +EV selections are posted.</p>
+            </div>
+          </article>
+          <article>
+            <span class="icon solid fa-coins"></span>
+            <div class="content">
+              <h3>Units, Not Dollars</h3>
+              <p>Stake and P&amp;L are tracked in units to keep results comparable for every bankroll size.</p>
+            </div>
+          </article>
+          <article>
+            <span class="icon solid fa-file-alt"></span>
+            <div class="content">
+              <h3>Full Transparency</h3>
+              <p>Every pick is logged with odds, edge, stake and outcome. Review the <a href="current.html">current log</a> or browse <a href="historic-2024-2025.html">historical seasons</a>.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section>
+        <header class="major"><h2>FAQ</h2></header>
+        <div class="posts">
+          <article>
+            <h3>What’s a “unit”?</h3>
+            <p>A fixed fraction of bankroll (e.g., 1 unit = 1% of bankroll). Tracking in units normalizes results across bettors.</p>
+          </article>
+          <article>
+            <h3>How is ROI computed?</h3>
+            <p>ROI = (Total Units Won) / (Total Units Staked). We show season ROI and recent windows (7/30 days).</p>
+          </article>
+          <article>
+            <h3>When are picks posted?</h3>
+            <p>Daily on slates with edges. If no edges today, we show the next scheduled date automatically.</p>
+          </article>
+          <article>
+            <h3>Do we lose bets?</h3>
+            <p>Of course we do. We will have losing days, losing weeks, and even losing months. At the end of the day, gambling with an edge is still gambling. Over the long run, we expect strong positive returns on our model.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Disclaimer -->
+      <section>
+        <header class="major"><h2>Responsible Betting</h2></header>
+        <p>Must be 21+ (or 18+ where applicable). Bet responsibly. This is not financial advice; results are not guaranteed. If you or someone you know has a gambling problem and wants help, call 1-800-GAMBLER.</p>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div id="sidebar">
+    <div class="inner">
+
+      <!-- Search -->
+      <section id="search" class="alt">
+        <form method="post" action="#"><input type="text" name="query" id="query" placeholder="Search" /></form>
+      </section>
+
+      <!-- Menu -->
+      <nav id="menu">
+        <header class="major"><h2>Menu</h2></header>
+        <ul>
+          <li><a href="index.html">Homepage</a></li>
+          <li><a href="today.html">Today's Picks</a></li>
+          <li><a href="current.html">Current Betting Log</a></li>
+          <li>
+            <span class="opener">Historic Betting Logs</span>
+            <ul>
+              <li><a href="historic-2023-2024.html">2023–2024 NBA Season</a></li>
+              <li><a href="historic-2024-2025.html">2024–2025 NBA Season</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Contact -->
+      <section>
+        <header class="major"><h2>Get in touch</h2></header>
+        <p>Questions about the model or the log? Reach out.</p>
+        <ul class="contact">
+          <li class="icon solid fa-envelope"><a href="#">info@oneupbetting.example</a></li>
+        </ul>
+      </section>
+
+      <!-- Footer -->
+      <footer id="footer">
+        <p class="copyright">&copy; OneUpBetting. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+      </footer>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+
+<script>
+/* Homepage KPIs from current-season Google Sheet (units-based). */
+(function () {
+  var SHEET_ID   = "1DwDw4pcQ4dQ98jKRjEUvXHOj75F_ZI6e_oTBysrTJzY"; // current season
+  var SHEET_NAME = "BettingLog";
+  // Only fetch what we use: A=Date, F=EV, G=Result, Y=StakeUnits, Z=PayoutUnits
+  var TQ         = "select A,F,G,Y,Z";
+  var JSONP_URL  =
+    "https://docs.google.com/spreadsheets/d/" + SHEET_ID +
+    "/gviz/tq?sheet=" + encodeURIComponent(SHEET_NAME) +
+    "&range=A2:Z" +                           // include Y/Z
+    "&tq=" + encodeURIComponent(TQ) +
+    "&tqx=out:json;responseHandler:__handleHomeKPIs";
+
+  // ---------- helpers ----------
+  function toNumber(x){
+    if (x == null || x === "") return NaN;
+    // Strip everything except digits, sign, dot and plus (handles "2.5%", "+1.0", etc.)
+    var n = Number(String(x).replace(/[^0-9\-\.+]/g, ""));
+    return isNaN(n) ? NaN : n;
+  }
+  function parseGVizDate(v){
+    if (!v) return null;
+    if (v instanceof Date) return v;
+    if (typeof v === "string"){
+      // GViz literal: Date(YYYY,MM,DD)  (month already 0-based)
+      var m = v.match(/^Date\((\d{4}),(\d{1,2}),(\d{1,2})\)$/);
+      if (m) return new Date(+m[1], +m[2], +m[3]);
+    }
+    var d = new Date(v);
+    if (!isNaN(d)) return d;
+    var mdy = String(v).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    if (mdy) return new Date(+mdy[3], +mdy[1]-1, +mdy[2]);
+    var ymd = String(v).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (ymd) return new Date(+ymd[1], +ymd[2]-1, +ymd[3]);
+    return null;
+  }
+  function sod(d){ return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+  function fmtYMD(d){ var y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,"0"), da=String(d.getDate()).padStart(2,"0"); return y+"-"+m+"-"+da; }
+  function set(id,val){ var el=document.getElementById(id); if(el) el.textContent = val; }
+
+  // Robust result classifier (W/L/Push/Void/Cancel/Tie/No action)
+  function classifyResult(s){
+    if (s == null) return "unknown";
+    var t = String(s).trim().toLowerCase();
+    if (!t) return "unknown";
+    if (t === "win" || t === "won" || /^w\b/.test(t) || /\bwin\b/.test(t)) return "win";
+    if (t === "loss" || t === "lost" || /^l\b/.test(t) || /\b(loss|lost)\b/.test(t)) return "loss";
+    if (t === "push" || t === "void" || t === "voided" || t === "cancel" || t === "canceled" || t === "cancelled" || t === "no action" || t === "noaction" || t === "tie" || /\b(push|void|cancel|no\s*action|tie)\b/.test(t)) return "push";
+    var ch = t[0]; if (ch === "w") return "win"; if (ch === "l") return "loss"; if ("pvct".indexOf(ch) >= 0) return "push";
+    return "unknown";
+  }
+
+  // Compute summary over a list of rows
+  function compute(list){
+    var wins=0, losses=0, pushes=0, stake=0, pl=0, evSum=0, evCnt=0;
+    for (var i=0; i<list.length; i++){
+      var r = list[i];
+      var c = classifyResult(r.result);
+      if (c === "win") wins++; else if (c === "loss") losses++; else if (c === "push") pushes++;
+
+      if (isFinite(r.stakeU))  stake += r.stakeU;
+      if (isFinite(r.payoutU)) pl    += r.payoutU;
+
+      // EV may be 0.025 (2.5%) or 2.5; normalize to percent
+      if (isFinite(r.ev)){
+        evSum += (Math.abs(r.ev) <= 1 ? r.ev * 100 : r.ev);
+        evCnt++;
+      }
+    }
+    var wr   = (wins+losses) > 0 ? (wins/(wins+losses))*100 : NaN;
+    var roi  = stake ? (pl/stake)*100 : NaN;
+    var avev = evCnt ? (evSum/evCnt) : NaN;
+    return {wins:wins, losses:losses, pushes:pushes, pl:pl, stake:stake, wr:wr, roi:roi, avev:avev};
+  }
+
+  // Filter to last N days (inclusive)
+  function summarize(records, days){
+    var today = sod(new Date());
+    var minDate = new Date(today); minDate.setDate(minDate.getDate() - days + 1);
+    var subset = records.filter(function(r){ return r.date && r.date >= sod(minDate); });
+    return compute(subset);
+  }
+
+  // ---------- JSONP handler ----------
+  window.__handleHomeKPIs = function(resp){
+    try{
+      var rows = (resp && resp.table && resp.table.rows) || [];
+      var recs=[];
+      for (var i=0; i<rows.length; i++){
+        var c = rows[i].c || [];
+        var v = function(idx){ return c[idx] ? c[idx].v : null; };
+
+        // Order based on TQ: select A,F,G,Y,Z
+        var d  = parseGVizDate(v(0));           // Date
+        var ev = toNumber(v(1));                // EV
+        var rs = (v(2) || "").toString().trim(); // Result
+        var st = toNumber(v(3));                // Stake Units
+        var pu = toNumber(v(4));                // Payout Units
+
+        recs.push({ date:d, ev:ev, result:rs, stakeU:st, payoutU:pu });
+      }
+
+      // Next picks date: today if present, else smallest date > today
+      var byDate = new Map();
+      for (var r=0; r<recs.length; r++){
+        var d = recs[r].date ? sod(recs[r].date) : null;
+        if (!d) continue;
+        var key = +d;
+        byDate.set(key, (byDate.get(key) || 0) + 1);
+      }
+      var today = sod(new Date()), tkey=+today;
+      if (byDate.has(tkey)) set("kpi-nextdate", fmtYMD(today));
+      else {
+        var fut = Array.from(byDate.keys()).filter(function(k){ return k > tkey; }).sort(function(a,b){ return a-b; });
+        set("kpi-nextdate", fut.length ? fmtYMD(new Date(fut[0])) : "No upcoming slate");
+      }
+
+      // Season KPIs
+      var season = compute(recs);
+      var pushLabel = season.pushes === 1 ? "push" : "pushes";
+      set("kpi-pl", (season.pl >= 0 ? "+" : "") + season.pl.toFixed(2));
+      set("kpi-roi", isFinite(season.roi) ? season.roi.toFixed(2) + "%" : "—");
+      set("kpi-record", season.wins + "–" + season.losses + (season.pushes ? ("–" + season.pushes + " " + pushLabel) : ""));
+      set("kpi-winrate", isFinite(season.wr) ? season.wr.toFixed(1) + "%" : "—");
+      set("kpi-ev", isFinite(season.avev) ? season.avev.toFixed(2) + "%" : "—");
+
+      // Recent windows (7 / 30 days)
+      var w7  = summarize(recs, 7);
+      var w30 = summarize(recs, 30);
+
+      set("kpi-7-pl",  (w7.pl >= 0 ? "+" : "") + w7.pl.toFixed(2));
+      set("kpi-7-record",  w7.wins + "–" + w7.losses + (w7.pushes ? ("–" + w7.pushes) : ""));
+      set("kpi-7-winrate", isFinite(w7.wr) ? w7.wr.toFixed(1) + "%" : "—");
+
+      set("kpi-30-pl", (w30.pl >= 0 ? "+" : "") + w30.pl.toFixed(2));
+      set("kpi-30-record", w30.wins + "–" + w30.losses + (w30.pushes ? ("–" + w30.pushes) : ""));
+      set("kpi-30-winrate", isFinite(w30.wr) ? w30.wr.toFixed(1) + "%" : "—");
+    } catch (e){
+      console.error(e);
+    }
+  };
+
+  // Inject JSONP script
+  document.addEventListener("DOMContentLoaded", function(){
+    var s = document.createElement("script");
+    s.src = JSONP_URL;
+    s.async = true;
+    document.body.appendChild(s);
+  });
+})();
+</script>
+
+</body>
+</html>
